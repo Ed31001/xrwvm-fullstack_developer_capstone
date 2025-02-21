@@ -1,18 +1,14 @@
-# Uncomment the following imports before adding the Model code
-
+from django.contrib import admin
 from django.db import models
-from django.utils.timezone import now
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-
-# Create your models here.
 class CarMake(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    # Other fields as needed
-
+    # Add any other fields you want for the car make
+    
     def __str__(self):
-        return self.name  # Return the name as the string representation
+        return self.name
 
 class CarModel(models.Model):
     car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)  # Many-to-One relationship
@@ -34,9 +30,10 @@ class CarModel(models.Model):
     def __str__(self):
         return self.name  # Return the name as the string representation
 
-from django.contrib import admin
-from .models import CarMake, CarModel
+@admin.register(CarMake)
+class CarMakeAdmin(admin.ModelAdmin):
+    pass
 
-# Registering models with their respective admins
-admin.site.register(CarMake)
-admin.site.register(CarModel)
+@admin.register(CarModel)
+class CarModelAdmin(admin.ModelAdmin):
+    pass

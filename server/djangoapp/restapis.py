@@ -1,5 +1,5 @@
 # Uncomment the imports below before you add the function code
-# import requests
+import requests
 import os
 from dotenv import load_dotenv
 
@@ -16,9 +16,7 @@ def get_request(endpoint, **kwargs):
     if(kwargs):
         for key,value in kwargs.items():
             params=params+key+"="+value+"&"
-
     request_url = backend_url+endpoint+"?"+params
-
     print("GET from {} ".format(request_url))
     try:
         # Call get method of requests library with URL and parameters
@@ -26,16 +24,6 @@ def get_request(endpoint, **kwargs):
         return response.json()
     except:
         # If any error occurs
-        print("Network exception occurred")
-
-def analyze_review_sentiments(text):
-    request_url = sentiment_analyzer_url+"analyze/"+text
-    try:
-        # Call get method of requests library with URL and parameters
-        response = requests.get(request_url)
-        return response.json()
-    except Exception as err:
-        print(f"Unexpected {err=}, {type(err)=}")
         print("Network exception occurred")
 
 def post_review(data_dict):
@@ -46,3 +34,15 @@ def post_review(data_dict):
         return response.json()
     except:
         print("Network exception occurred")
+# request_url = sentiment_analyzer_url+"analyze/"+text
+def analyze_review_sentiments(text):
+    request_url = sentiment_analyzer_url + "analyze/" + text
+    print("Analyzing sentiment for:", text)
+    try:
+        response = requests.get(request_url)
+        return response.json()
+    except Exception as e:
+        print("Exception occurred while analyzing sentiment:", str(e))
+        return {'error': 'Failed to analyze sentiment'}
+
+# Add code for retrieving sentiments
